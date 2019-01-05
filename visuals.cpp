@@ -31,9 +31,9 @@ using namespace std;
 
 void init_stars() {
 	for (int i = 0; i < 100; i++) {
-		x[i] = (rand() % 300);
-		y[i] = (rand() % 300);
-		xx[i] = (rand() % 600) + 300;
+		x[i] = (rand() % 200);
+		y[i] = (rand() % 200);
+		xx[i] = (rand() % 300) + 150;
 
 		if (rand()%2 != 0)
 			xx[i]*=-1;
@@ -50,7 +50,7 @@ void DisplayStars() {
 
 		glPushMatrix();
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glutSolidSphere(1.5, 100, 50);
+		glutSolidSphere(0.7, 10, 8);
 		glPopMatrix();
 		glPopMatrix();
 	}
