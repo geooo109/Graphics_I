@@ -16,8 +16,12 @@ static float opac = 0;
 static float star_radius =  0 ;
 static float t2 = 0;
 static float t = 0;
+
+/*== rotation*/
 static float rotx = 0.0;
 static float roty = 0.0;
+static float rotz = 0.0;
+
 static float planetrot = 0.0;
 static bool animate = true;
 static bool animate_star = true;
@@ -50,6 +54,7 @@ void Render()
 	glTranslatef(0.0, 0.0, -100);
 	glRotatef(rotx, 0, 1, 0);
 	glRotatef(roty, 1, 0, 0);
+	glRotatef(rotz, 0, 0, 1);
 
 	DisplayAxes();
 	DisplaySun();
@@ -100,17 +105,23 @@ void Keyboard(unsigned char key,int x,int y)
 {
 	switch(key)
 	{
-	case 'q' : exit(0);
-		break;
-	case 'a' : rotx-=0.5f;
-		break;
-	case 'd' : rotx+=0.5f;
-		break;
-	case 'w': roty -= 0.5f;
-		break;
-	case 's': roty += 0.5f;
-		break;
-	default : break;
+		case 'q': exit(0);
+			break;
+		case 'p': animate != animate;
+			break;
+		case 'a': rotx -=5.0f;
+			break;
+		case 'd': rotx +=5.0f;
+			break;
+		case 'w': roty -= 5.0f;
+			break;
+		case 's': roty += 5.0f;
+			break;
+		case 'z': rotz += 5.0f;
+			break;
+		case 'c': rotz -= 5.0f;
+			break;
+		default : break;
 	}
 
 	glutPostRedisplay();
@@ -230,7 +241,6 @@ void DisplaySun()
 	/*== sun*/
 	glPushMatrix();
 		glScalef(0.02, 0.02, 0.02);
-		glTranslatef(0.0, 0.0, -800.0);
 		glColor4f(255, 255, 0,255);
 		glutSolidSphere(700,100,100);
 	glPopMatrix();
@@ -242,8 +252,6 @@ void DisplaySun()
 	/*== radiation*/
 	glPushMatrix();
 		glScalef(0.02, 0.02, 0.02);
-		glTranslatef(0.0, 0.0, -800);
-		glRotatef(rotx, 1, 0, 0);
 		glColor4f(253,255,0,opac);
 		glutSolidSphere(radius, 20, 20);
 	glPopMatrix();
@@ -267,7 +275,7 @@ void DisplayPlanet()
 			glRotatef(4*planetrot, 0, 0, 1);
 			glScalef(0.3,0.3,0.3);
 			glTranslatef(3200, 200, -1000);
-			glRotatef(5*planetrot, 1, 0, 0);
+			//glRotatef(5*planetrot, 1, 0, 0);
 			glColor3f(0.5, 0.5, 0.5);
 			DisplayModel(md);
 		glPopMatrix();
