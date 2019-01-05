@@ -12,8 +12,6 @@ int main(int argc, char* argv[])
   // initialize GLUT library state
   glutInit(&argc, argv);
 
-  init_stars();
-	
   glutInitDisplayMode(GLUT_RGBA|GLUT_DEPTH|GLUT_DOUBLE);
  
   glutInitWindowSize(1000,700);
