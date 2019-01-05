@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include <GL/freeglut.h>
-
 #include "visuals.h"   // Header file for our OpenGL functions
 
 /////////////// Main Program ///////////////////////////
 
 int main(int argc, char* argv[])
 { 
+  srand(time(NULL));
+  init_stars();
   // initialize GLUT library state
   glutInit(&argc, argv);
 

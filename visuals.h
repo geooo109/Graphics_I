@@ -26,7 +26,7 @@ struct model
 };
 
 //-------- Functions --------------------------------
-
+void init_stars();
 void Render();
 // The function responsible for drawing everything in the 
 // OpenGL context associated to a window. 

@@ -30,7 +30,6 @@ static int x[100], y[100], xx[100];
 using namespace std;
 
 void init_stars() {
-	srand(time(NULL));
 	for (int i = 0; i < 100; i++) {
 		x[i] = (rand() % 300);
 		y[i] = (rand() % 300);
@@ -42,7 +41,6 @@ void init_stars() {
 }
 
 void DisplayStars() {
-	init_stars();
 	for (int i = 0; i < 100; i++) {
 		glPushMatrix();
 		glRotatef(x[i], 1.0, 0.0, 0.0);
