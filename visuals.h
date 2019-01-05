@@ -44,8 +44,7 @@ void ReadFile(model*);
 //Function for reading a model file
 
 void DisplaySun();
-void DisplayPlanet();
-void DisplayMoon();
+void DisplayPlanetAndMoon();
 void DisplayAxes();
 void DisplayModel(model);
 // Function for displaying a model
@@ -57,5 +56,3 @@ void Mouse(int button,int state,int x,int y);
 // Function for handling mouse events
 
 void MenuSelect(int choice);
-
-void init_stars();

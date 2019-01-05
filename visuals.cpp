@@ -12,9 +12,7 @@ model md;
 int i = 0;
 static float tx = 0.0;
 static float radius = 0;
-static float opac = 0;
-static float star_radius =  0 ;
-static float t2 = 0;
+static float transparency = 0;
 static float t = 0;
 
 /*== rotation*/
@@ -24,7 +22,6 @@ static float rotz = 0.0;
 
 static float planetrot = 0.0;
 static bool animate = true;
-static bool animate_star = true;
 static float red = 1.0;
 static float green = 0.0;
 static float blue = 0.0;
@@ -45,6 +42,7 @@ void init_stars() {
 }
 
 void DisplayStars() {
+	init_stars();
 	for (int i = 0; i < 100; i++) {
 		glPushMatrix();
 		glRotatef(x[i], 1.0, 0.0, 0.0);
@@ -53,8 +51,8 @@ void DisplayStars() {
 		glTranslatef(xx[i], 0.0, 0.0);
 
 		glPushMatrix();
-		glutSolidSphere(1, 14, 14);
-		glScalef(0.3,0.3,0.3);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glutSolidSphere(1.5, 100, 50);
 		glPopMatrix();
 		glPopMatrix();
 	}
@@ -67,17 +65,17 @@ void Render()
 													   // and the depth buffer
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
-
-	glTranslatef(0.0, 0.0, -100);
-	glRotatef(rotx, 0, 1, 0);
-	glRotatef(roty, 1, 0, 0);
+	
+	DisplayAxes();
+	
+	glTranslatef(0.0, 0.0, -300);
+	glRotatef(rotx, 1, 0, 0);
+	glRotatef(roty, 0, 1, 0);
 	glRotatef(rotz, 0, 0, 1);
 
-	DisplayAxes();
-	DisplaySun();
-	DisplayPlanet();
-	DisplayMoon();
 	DisplayStars();
+	DisplayPlanetAndMoon();
+	DisplaySun();
 
 	glutSwapBuffers();             // All drawing commands applied to the 
 								 // hidden buffer, so now, bring forward;
@@ -92,29 +90,24 @@ void Resize(int w, int h)
 	glViewport(0,0,w,h); 
 
 	// Setup viewing volume
-
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity();
 
 	gluPerspective(60.0, (float)w/(float)h, 1.0, 700.0);
 }
 
+static float t2 = 0;
 void Idle()
 {
-	//Animation hliou
+	/*== animation of the sun*/
 	if (animate)
-		radius = 700 + sin(t) * 300;
-		opac = sin(t);
-	t += 0.1;
-	//Animation asteriwn
-	
-	if (animate)
-			star_radius = 0.5 + sin(t2)*0.3;
-	t2 += 0.2;
-	if (animate) {
+	{
+		radius = 800 + sin(t) * 300;
+		transparency = sin(t);
 		planetrot += 0.5f;
 	}
-
+	t += 0.01;
+	
 	glutPostRedisplay();
 }
 
@@ -124,7 +117,7 @@ void Keyboard(unsigned char key,int x,int y)
 	{
 		case 'q': exit(0);
 			break;
-		case 'p': animate != animate;
+		case 'p': animate = !animate;
 			break;
 		case 'a': rotx -=5.0f;
 			break;
@@ -171,7 +164,7 @@ void Setup()  // TOUCH IT !!
 	glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
   
 	//Set up light source
-	GLfloat light_position[] = { 0.0, 0.0, -100.0, 0.0 };
+	GLfloat light_position[] = { 0.0, 0.0, 100.0, 0.0 };
 	
 	glLightfv( GL_LIGHT0, GL_POSITION, light_position);
 
@@ -189,6 +182,10 @@ void Setup()  // TOUCH IT !!
 	glFrontFace(GL_CW);
 
 	glFrontFace(GL_CCW);
+
+	/*== enable GL_BLEND for transparency*/
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Black background
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
@@ -253,50 +250,47 @@ void ReadFile(model *md)
  
 void DisplaySun()
 {
-	glDisable(GL_BLEND);
-
 	/*== sun*/
 	glPushMatrix();
-		glScalef(0.02, 0.02, 0.02);
-		glColor4f(255, 255, 0,255);
-		glutSolidSphere(700,100,100);
+		glScalef(0.06, 0.06, 0.06);
+		glColor3f(255, 255, 0);
+		glutSolidSphere(500, 100, 100);
 	glPopMatrix();
-
-	glEnable(GL_BLEND);
-
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	/*== radiation*/
 	glPushMatrix();
-		glScalef(0.02, 0.02, 0.02);
-		glColor4f(253,255,0,opac);
+		glScalef(0.05, 0.05, 0.05);
+		glColor4f(253, 255, 0, transparency);
 		glutSolidSphere(radius, 20, 20);
 	glPopMatrix();
 }
 
-void DisplayPlanet()
+void DisplayPlanetAndMoon()
 {
+	/*== planet: rotate around the sun*/
 	glPushMatrix();
-		glRotatef(0.5*planetrot, 0, 1, 0); //kinhsh gurw ap ton hlio
-		glScalef(0.02, 0.02, 0.02);
-		glTranslatef(2000, 0.0, -1500);
-		glRotatef(planetrot, 0, 1, 0);   
-		glColor3f(0.0, 0.0, 1.0);   // Set drawing colour
-		glScalef(0.8, 0.8, 0.8);
-		DisplayModel(md);
-	}
+	glRotatef(0.5*planetrot, 0.0, 1.0, 0.0);
+	glTranslatef(150, 0, 0);
 
-	void DisplayMoon()
-	{
-		glPushMatrix(); 
-			glRotatef(4*planetrot, 0, 0, 1);
-			glScalef(0.3,0.3,0.3);
-			glTranslatef(3200, 200, -1000);
-			//glRotatef(5*planetrot, 1, 0, 0);
-			glColor3f(0.5, 0.5, 0.5);
-			DisplayModel(md);
-		glPopMatrix();
-	}
+	/*== planet: rotate around itself*/
+	glPushMatrix();
+	glRotatef(2*planetrot, 0.0, 1.0, 0.0);
+	glColor3f(0.0, 0.0, 1.0);
+	glScalef(0.05, 0.05, 0.05);
+	DisplayModel(md);
+	glPopMatrix();
+
+	/*== moon: rotate around planet*/
+	glRotatef(5*planetrot, 1.0, 0.0, 0.0);
+	glTranslatef(0, 50, 0);
+	glColor3f(0.5, 0.5, 0.5);
+	glScalef(0.01, 0.01, 0.01);
+
+	/*== moon: rotate around itself -- moon rotates around itself every 27 days*/
+	glRotatef(0.1*planetrot, 0.0, 1.0, 0.0);
+	DisplayModel(md);
+	glPopMatrix();
+}
 
 void DisplayAxes()
 {
@@ -320,7 +314,7 @@ void DisplayAxes()
 	{
 		glPushMatrix();
 		glBegin(GL_TRIANGLES);
-	glEnable(GL_NORMALIZE);
+		glEnable(GL_NORMALIZE);
 	for (int i = 0; i < md.faces; i++)
 	{
 		glNormal3f(md.obj_points[md.obj_faces[i].vtxn[0] - 1].x, md.obj_points[md.obj_faces[i].vtxn[0] - 1].y, md.obj_points[md.obj_faces[i].vtxn[0] - 1].z);
