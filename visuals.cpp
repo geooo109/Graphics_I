@@ -28,18 +28,35 @@ static bool animate_star = true;
 static float red = 1.0;
 static float green = 0.0;
 static float blue = 0.0;
-static int x[100], y[100], z[100];
+static int x[100], y[100], xx[100];
 
 using namespace std;
 
-void init_stars()
-{
+void init_stars() {
 	srand(time(NULL));
-	for (int i = 0; i < 100; i++)
-	{
-		x[i] = rand() % STARS - 900;
-		y[i] = rand() % STARS - 900;
-		z[i] = rand() % STARS - 900;
+	for (int i = 0; i < 100; i++) {
+		x[i] = (rand() % 300);
+		y[i] = (rand() % 300);
+		xx[i] = (rand() % 600) + 300;
+
+		if (rand()%2 != 0)
+			xx[i]*=-1;
+	}
+}
+
+void DisplayStars() {
+	for (int i = 0; i < 100; i++) {
+		glPushMatrix();
+		glRotatef(x[i], 1.0, 0.0, 0.0);
+		glRotatef(y[i], 0.0, 1.0, 0.0);
+		glRotatef(0.0, 0.0, 0.0, 1.0);
+		glTranslatef(xx[i], 0.0, 0.0);
+
+		glPushMatrix();
+		glutSolidSphere(1, 14, 14);
+		glScalef(0.3,0.3,0.3);
+		glPopMatrix();
+		glPopMatrix();
 	}
 }
 
@@ -60,7 +77,7 @@ void Render()
 	DisplaySun();
 	DisplayPlanet();
 	DisplayMoon();
-
+	DisplayStars();
 
 	glutSwapBuffers();             // All drawing commands applied to the 
 								 // hidden buffer, so now, bring forward;
