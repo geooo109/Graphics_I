@@ -303,6 +303,9 @@ void DisplayAxes()
 	glPushMatrix();
 		glColor3f(255, 255, 255);
 		glTranslatef(0, 0, -100);
+		glRotatef(rotx, 1.0, 0.0, 0.0);
+  		glRotatef(roty, 0.0, 1.0, 0.0);
+  		glRotatef(rotz, 0.0, 0.0, 1.0);
 		
 		glBegin(GL_LINES);
 
