@@ -4,9 +4,14 @@
 #include <string.h>
 #include <math.h>
 #include <fstream>
+#include <iostream>
 #include <GL/freeglut.h>
 
 #include "visuals.h"   // Header file for our OpenGL functions
+
+// this is for the mallocs to read from file
+#define SIZE_POINT 9999
+#define SIZE_FACE 19000
 
 model md;
 int i = 0;
@@ -214,36 +219,39 @@ void MenuSelect(int choice)
 
 void ReadFile(model *md)
 {
-	FILE* obj_file = fopen("planet.obj", "r");
-	md->faces = 0;
-	md->obj_points = (point*)malloc(sizeof(point) * 9122);
-	md->obj_faces = (face*)malloc(sizeof(face) * 18240);
-	char word[64];
+	char temp_w[128];
 	int v = 0;
 	int vn = 0;
 	int f = 0;
 
-	while (1)
-	{
-		if (fscanf(obj_file, "%s", word) == EOF)
-			break;
-		else
-		{
-			if (strcmp(word, "v") == 0)
-			{
-				fscanf(obj_file, "%f %f %f\n", &(md->obj_points[v].x), &(md->obj_points[v].y), &(md->obj_points[v].z));
-					v++;
-			}
-			else if (strcmp(word, "f") == 0)
-			{
-				md->faces++;
-				fscanf(obj_file, "%d//%d %d//%d %d//%d\n", &(md->obj_faces[f].vtx[0]), &(md->obj_faces[f].vtxn[0]), &(md->obj_faces[f].vtx[1]), &(md->obj_faces[f].vtxn[1]), &(md->obj_faces[f].vtx[2]), &(md->obj_faces[f].vtxn[2]));
-					f++;
-			}
+	FILE* obj_file = fopen("planet.obj", "r");
+	if (obj_file == NULL) {
+		std::cout << "Wrong file,try again\n";
+		return;
+	}
+
+	md->faces = 0;
+	md->obj_points = (point*)malloc(sizeof(point) * SIZE_POINT);
+	md->obj_faces = (face*)malloc(sizeof(face) * SIZE_FACE);
+
+	if (md->obj_points == NULL || md->obj_faces == NULL) {
+		std::cout << "Malloc error\n";
+		return;
+	}
+
+	while (fscanf(obj_file, "%s", temp_w) != EOF) {
+		if (!strcmp(temp_w, "v")) {
+			fscanf(obj_file, "%f %f %f\n", &(md->obj_points[v].x), &(md->obj_points[v].y), &(md->obj_points[v].z));
+			v++;
+		}
+		else if (!strcmp(temp_w, "f")) {
+			fscanf(obj_file, "%d//%d %d//%d %d//%d\n", &(md->obj_faces[f].vtx[0]), &(md->obj_faces[f].vtxn[0]), &(md->obj_faces[f].vtx[1]), &(md->obj_faces[f].vtxn[1]), &(md->obj_faces[f].vtx[2]), &(md->obj_faces[f].vtxn[2]));
+			md->faces++;
+			f++;
 		}
 	}
-	fclose(obj_file);
 	md->vertices = v;
+	fclose(obj_file);
 }
  
 void DisplaySun()

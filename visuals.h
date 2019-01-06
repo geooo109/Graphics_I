@@ -1,3 +1,6 @@
+#ifndef __VISUALS_H__
+#define __VISUALS_H__
+
 #define RED 1
 #define GREEN 2
 #define BLUE 3
@@ -56,3 +59,5 @@ void Mouse(int button,int state,int x,int y);
 // Function for handling mouse events
 
 void MenuSelect(int choice);
+
+#endif
