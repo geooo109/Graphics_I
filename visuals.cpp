@@ -55,7 +55,7 @@ void DisplayStars() {
 
 		glPushMatrix();
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glutSolidSphere(0.7, 10, 8);
+		glutSolidSphere(0.7, 5, 5);
 		glPopMatrix();
 		glPopMatrix();
 	}
@@ -301,26 +301,28 @@ void DisplayPlanetAndMoon()
 void DisplayAxes()
 {
 	glPushMatrix();
+		glColor3f(1.0, 1.0, 1.0);
+		glTranslatef(0, 0, -100);
+		
 		glBegin(GL_LINES);
 
 		/*== draw line for x axis*/
-		glColor3f(1.0, 1.0, 1.0);
 		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(1000.0, 0.0, 0.0);
+		glVertex3f(50.0, 0.0, 0.0);
 
 		/*== draw line for y axis*/
-		glColor3f(1.0, 1.0, 1.0);
 		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(0.0, 1000.0, 0.0);
+		glVertex3f(0.0, 50.0, 0.0);
+
 		glEnd();
 	glPopMatrix();
 }
 
-	void DisplayModel(model md)
-	{
-		glPushMatrix();
-		glBegin(GL_TRIANGLES);
-		glEnable(GL_NORMALIZE);
+void DisplayModel(model md)
+{
+	glPushMatrix();
+	glBegin(GL_TRIANGLES);
+	glEnable(GL_NORMALIZE);
 	for (int i = 0; i < md.faces; i++)
 	{
 		glNormal3f(md.obj_points[md.obj_faces[i].vtxn[0] - 1].x, md.obj_points[md.obj_faces[i].vtxn[0] - 1].y, md.obj_points[md.obj_faces[i].vtxn[0] - 1].z);
@@ -330,7 +332,6 @@ void DisplayAxes()
 		glNormal3f(md.obj_points[md.obj_faces[i].vtxn[2] - 1].x, md.obj_points[md.obj_faces[i].vtxn[2] - 1].y, md.obj_points[md.obj_faces[i].vtxn[2] - 1].z);
 		glVertex3f(md.obj_points[md.obj_faces[i].vtx[2]-1].x,md.obj_points[md.obj_faces[i].vtx[2]-1].y,md.obj_points[md.obj_faces[i].vtx[2]-1].z);
 	}
-
 	glEnd();
 	glPopMatrix();
 }
