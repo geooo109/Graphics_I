@@ -301,7 +301,7 @@ void DisplayPlanetAndMoon()
 void DisplayAxes()
 {
 	glPushMatrix();
-		glColor3f(1.0, 1.0, 1.0);
+		glColor3f(255, 255, 255);
 		glTranslatef(0, 0, -100);
 		
 		glBegin(GL_LINES);
