@@ -122,13 +122,13 @@ void Keyboard(unsigned char key,int x,int y)
 			break;
 		case 'p': animate = !animate;
 			break;
-		case 'a': rotx -=5.0f;
+		case 'a': roty -=5.0f;
 			break;
-		case 'd': rotx +=5.0f;
+		case 'd': roty +=5.0f;
 			break;
-		case 'w': roty -= 5.0f;
+		case 'w': rotx -= 5.0f;
 			break;
-		case 's': roty += 5.0f;
+		case 's': rotx += 5.0f;
 			break;
 		case 'z': rotz += 5.0f;
 			break;
