@@ -28,14 +28,6 @@ int main(int argc, char* argv[])
   glutKeyboardFunc(Keyboard);
   glutMouseFunc(Mouse);
 
-  glutCreateMenu(MenuSelect);
-  glutAddMenuEntry("Red",RED);
-  glutAddMenuEntry("Blue",BLUE);
-  glutAddMenuEntry("Green",GREEN);
-  glutAddMenuEntry("White",WHITE);
-  
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
-
   glutMainLoop();
   return 0;	
 }  
