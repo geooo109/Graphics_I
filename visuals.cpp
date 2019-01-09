@@ -194,29 +194,6 @@ void Setup()  // TOUCH IT !!
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
 }
 
-void MenuSelect(int choice)
-{
-	switch (choice) 
-	{
-		case RED : 
-			red = 1.0; 
-			green = 0.0; 
-			blue = 0.0; break;
-		case GREEN : 
-			red = 0.0; 
-			green = 1.0; 
-			blue = 0.0; break;
-		case BLUE : 
-			red = 0.0; 
-			green = 0.0; 
-			blue = 1.0; break;
-		case WHITE : 
-			red = 1.0; 
-			green = 1.0; 
-			blue = 1.0; break;
-	}
-}
-
 void ReadFile(model *md)
 {
 	char temp_w[128];
