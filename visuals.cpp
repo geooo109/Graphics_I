@@ -176,7 +176,7 @@ void Setup()  // TOUCH IT !!
 	GLfloat specularLight[] = { 1.0, 1.0, 1.0, 1.0 };
 
 	glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseLight );
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
