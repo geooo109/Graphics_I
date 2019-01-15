@@ -1,8 +1,8 @@
 OBJS 	= main.o visuals.o
 SOURCE	= main.cpp visuals.cpp
 HEADER  = visuals.h
-OUT  	= a.out
-CC		= g++
+OUT  	= plan_exec
+CC	= g++
 FLAGS 	= -c -g 
 GLUT	= -lglut -lGLU -lGL
 # -g option enables debugging mode 

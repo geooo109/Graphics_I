@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 { 
-  srand(100);
+  srand(12);
   init_stars();
   // initialize GLUT library state
   glutInit(&argc, argv);

@@ -10,6 +10,7 @@
 #include "visuals.h"   // Header file for our OpenGL functions
 
 // this is for the mallocs to read from file
+// we could use 18200,7200 but this works fine
 #define SIZE_POINT 9999
 #define SIZE_FACE 19000
 
@@ -30,15 +31,15 @@ static bool animate = true;
 static float red = 1.0;
 static float green = 0.0;
 static float blue = 0.0;
-static int x[100], y[100], xx[100];
+static int x[STARS], y[STARS], xx[STARS];
 
 using namespace std;
 
 void init_stars() {
-	for (int i = 0; i < 100; i++) {
-		x[i] = (rand() % 200);
-		y[i] = (rand() % 200);
-		xx[i] = (rand() % 300) + 150;
+	for (int i = 0; i < STARS; i++) {
+		x[i] = (rand() % 350);
+		y[i] = (rand() % 350);
+		xx[i] = (rand() % 500) + 300;
 
 		if (rand()%2 != 0)
 			xx[i]*=-1;
@@ -46,7 +47,7 @@ void init_stars() {
 }
 
 void DisplayStars() {
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < STARS; i++) {
 		glPushMatrix();
 		glRotatef(x[i], 1.0, 0.0, 0.0);
 		glRotatef(y[i], 0.0, 1.0, 0.0);
@@ -54,8 +55,8 @@ void DisplayStars() {
 		glTranslatef(xx[i], 0.0, 0.0);
 
 		glPushMatrix();
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glutSolidSphere(0.7, 5, 5);
+		glColor3f(0.6, 0.6, 0.6);
+		glutSolidSphere(1, 12, 12);
 		glPopMatrix();
 		glPopMatrix();
 	}
@@ -109,7 +110,7 @@ void Idle()
 		transparency = sin(t);
 		planetrot += 0.5f;
 	}
-	t += 0.01;
+	t += 0.02;
 	
 	glutPostRedisplay();
 }
@@ -165,9 +166,12 @@ void Setup()  // TOUCH IT !!
 	// polygon rendering mode
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
-  
+  	glEnable(GL_NORMALIZE);
+
 	//Set up light source
-	GLfloat light_position[] = { 0.0, 0.0, 100.0, 0.0 };
+	GLfloat light_position[] = { 0.0, 30.0, 300.0, 0.0 };
+	//GLfloat light_position[] = { 0.0, 30.0, 50.0, 0.0 };
+	//GLfloat light_position[] = { 0.0, 0.0, 100.0, 0.0 };
 	
 	glLightfv( GL_LIGHT0, GL_POSITION, light_position);
 
@@ -175,8 +179,9 @@ void Setup()  // TOUCH IT !!
 	GLfloat diffuseLight[] = { 0.8, 0.8, 0.8, 1.0 };
 	GLfloat specularLight[] = { 1.0, 1.0, 1.0, 1.0 };
 
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 	glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseLight );
-	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -257,21 +262,24 @@ void DisplayPlanetAndMoon()
 
 	/*== planet: rotate around itself*/
 	glPushMatrix();
-	glRotatef(2*planetrot, 0.0, 1.0, 0.0);
+
+	// uncomment if we want earth to rotate from her self
+	//glRotatef(2*planetrot, 0.0, 1.0, 0.0);
+
 	glColor3f(0.0, 0.0, 1.0);
 	glScalef(0.05, 0.05, 0.05);
-	//DisplayModel(md);
+	DisplayModel(md);
 	glPopMatrix();
 
 	/*== moon: rotate around planet*/
 	glRotatef(5*planetrot, 1.0, 0.0, 0.0);
 	glTranslatef(0, 50, 0);
-	glColor3f(0.5, 0.5, 0.5);
+	glColor3f( 0.4, 0.4, 0.4);
 	glScalef(0.01, 0.01, 0.01);
 
 	/*== moon: rotate around itself -- moon rotates around itself every 27 days*/
 	glRotatef(0.1*planetrot, 0.0, 1.0, 0.0);
-	//DisplayModel(md);
+	DisplayModel(md);
 	glPopMatrix();
 }
 
@@ -302,7 +310,6 @@ void DisplayModel(model md)
 {
 	glPushMatrix();
 	glBegin(GL_TRIANGLES);
-	glEnable(GL_NORMALIZE);
 	for (int i = 0; i < md.faces; i++)
 	{
 		glNormal3f(md.obj_points[md.obj_faces[i].vtxn[0] - 1].x, md.obj_points[md.obj_faces[i].vtxn[0] - 1].y, md.obj_points[md.obj_faces[i].vtxn[0] - 1].z);

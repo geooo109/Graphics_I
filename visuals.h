@@ -5,7 +5,7 @@
 #define GREEN 2
 #define BLUE 3
 #define WHITE 4
-#define STARS 1000
+#define STARS 700
 
 struct point 
 {
@@ -30,6 +30,7 @@ struct model
 
 //-------- Functions --------------------------------
 void init_stars();
+
 void Render();
 // The function responsible for drawing everything in the 
 // OpenGL context associated to a window. 
