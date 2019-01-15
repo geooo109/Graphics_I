@@ -176,7 +176,7 @@ void Setup()  // TOUCH IT !!
 	GLfloat specularLight[] = { 1.0, 1.0, 1.0, 1.0 };
 
 	glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseLight );
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -260,7 +260,7 @@ void DisplayPlanetAndMoon()
 	glRotatef(2*planetrot, 0.0, 1.0, 0.0);
 	glColor3f(0.0, 0.0, 1.0);
 	glScalef(0.05, 0.05, 0.05);
-	DisplayModel(md);
+	//DisplayModel(md);
 	glPopMatrix();
 
 	/*== moon: rotate around planet*/
@@ -271,7 +271,7 @@ void DisplayPlanetAndMoon()
 
 	/*== moon: rotate around itself -- moon rotates around itself every 27 days*/
 	glRotatef(0.1*planetrot, 0.0, 1.0, 0.0);
-	DisplayModel(md);
+	//DisplayModel(md);
 	glPopMatrix();
 }
 
