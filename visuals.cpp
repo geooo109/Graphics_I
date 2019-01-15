@@ -31,32 +31,42 @@ static bool animate = true;
 static float red = 1.0;
 static float green = 0.0;
 static float blue = 0.0;
-static int x[STARS], y[STARS], xx[STARS];
+static float x[STARS_FRONT], y[STARS_FRONT], z[STARS_FRONT];
+
+//RAND BOUNDS
+#define MIN 1
+#define MAX 300
 
 using namespace std;
 
-void init_stars() {
-	for (int i = 0; i < STARS; i++) {
-		x[i] = (rand() % 350);
-		y[i] = (rand() % 350);
-		xx[i] = (rand() % 500) + 300;
+//This example shows how to create an array of random floating-point numbers that are drawn from a uniform distribution in the open interval 
+static inline float rand_back (int a, int b) {
+	return ((b-a)* (float(rand()) / float(RAND_MAX)) + a);
+}
 
-		if (rand()%2 != 0)
-			xx[i]*=-1;
+// Stars also front
+void init_stars() {
+	for (int i = 0; i < STARS_FRONT; i++) {
+		x[i] = rand_back(MIN,MAX);
+		if (rand()%2 != 0) x[i] *= -1;
+
+		y[i] = rand_back(MIN,MAX);
+		if (rand()%2 != 0) y[i] *= -1;
+		
+		z[i] = rand_back(MIN,MAX);
+		if (rand()%2 != 0) z[i] *= -1;
 	}
 }
 
+
 void DisplayStars() {
-	for (int i = 0; i < STARS; i++) {
+	for (int i = 0; i < STARS_FRONT; i++) {
 		glPushMatrix();
-		glRotatef(x[i], 1.0, 0.0, 0.0);
-		glRotatef(y[i], 0.0, 1.0, 0.0);
-		glRotatef(0.0, 0.0, 0.0, 1.0);
-		glTranslatef(xx[i], 0.0, 0.0);
+		glTranslatef(x[i], y[i], z[i]);
 
 		glPushMatrix();
 		glColor3f(0.6, 0.6, 0.6);
-		glutSolidSphere(1, 12, 12);
+		glutSolidSphere(0.8, 8, 8);
 		glPopMatrix();
 		glPopMatrix();
 	}
@@ -169,8 +179,8 @@ void Setup()  // TOUCH IT !!
   	glEnable(GL_NORMALIZE);
 
 	//Set up light source
-	GLfloat light_position[] = { 0.0, 30.0, 300.0, 0.0 };
-	//GLfloat light_position[] = { 0.0, 30.0, 50.0, 0.0 };
+	//GLfloat light_position[] = { 0.0, 30.0, 300.0, 0.0 };
+	GLfloat light_position[] = { 0.0, 30.0, 50.0, 0.0 };
 	//GLfloat light_position[] = { 0.0, 0.0, 100.0, 0.0 };
 	
 	glLightfv( GL_LIGHT0, GL_POSITION, light_position);
@@ -181,7 +191,6 @@ void Setup()  // TOUCH IT !!
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 	glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseLight );
-
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
@@ -288,7 +297,7 @@ void DisplayAxes()
 {
 	glPushMatrix();
 		glColor3f(255, 255, 255);
-		glTranslatef(0, 0, -100);
+		glTranslatef(0, 0, -150);
 		glRotatef(rotx, 1.0, 0.0, 0.0);
   		glRotatef(roty, 0.0, 1.0, 0.0);
   		glRotatef(rotz, 0.0, 0.0, 1.0);

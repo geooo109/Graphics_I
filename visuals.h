@@ -5,7 +5,7 @@
 #define GREEN 2
 #define BLUE 3
 #define WHITE 4
-#define STARS 700
+#define STARS_FRONT 300
 
 struct point 
 {
@@ -29,7 +29,7 @@ struct model
 };
 
 //-------- Functions --------------------------------
-void init_stars();
+void init_stars(); // also in fron while rotate
 
 void Render();
 // The function responsible for drawing everything in the 

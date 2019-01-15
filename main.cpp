@@ -8,8 +8,11 @@
 
 int main(int argc, char* argv[])
 { 
-  srand(12);
+
+  // while rotate output it in front
+  srand(10);
   init_stars();
+
   // initialize GLUT library state
   glutInit(&argc, argv);
 
