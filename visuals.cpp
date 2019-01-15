@@ -181,7 +181,8 @@ void Setup()  // TOUCH IT !!
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 	glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseLight );
-	//glEnable(GL_LIGHTING);
+
+	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
